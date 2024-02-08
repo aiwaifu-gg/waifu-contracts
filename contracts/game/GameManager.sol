@@ -78,6 +78,11 @@ contract GameManager is Initializable, AccessControlUpgradeable {
 
     uint256 private _nextTemptId;
     mapping(uint256 ingredientId => uint256 temptIngredientId) public temptMap;
+    mapping(uint256 waifuId => uint256 cooldown) private _cooldownByWaifu;
+    mapping (address => uint256 cooldown) private _cooldownByAddress;
+    uint16 public defendCooldown;
+    uint16 public temptCooldown;
+    event TemptCooldownUpdated(uint16 defendCooldown, uint16 temptCooldown);
     event TemptMapUpdated(uint256 ingredientId, uint256 temptIngredientId);
     event Tempted(
         address indexed account,
@@ -160,6 +165,15 @@ contract GameManager is Initializable, AccessControlUpgradeable {
     ) external onlyRole(DEFAULT_ADMIN_ROLE) {
         maxLevel = _maxLevel;
         emit MaxLevelUpdated(_maxLevel);
+    }
+
+    function updateTemptCooldown(
+        uint16 defendCooldown_,
+        uint16 temptCooldown_
+    ) external onlyRole(DEFAULT_ADMIN_ROLE) {
+        defendCooldown = defendCooldown_;
+        temptCooldown = temptCooldown_;
+        emit TemptCooldownUpdated(defendCooldown_, temptCooldown_);
     }
 
     function _feed(uint256 waifuId) internal isActive(waifuId) {
@@ -321,6 +335,14 @@ contract GameManager is Initializable, AccessControlUpgradeable {
 
     function tempt(uint256 waifuId, uint256 wager) external isActive(waifuId) {
         address account = _msgSender();
+        require(
+            _cooldownByWaifu[waifuId] < block.timestamp,
+            "Waifu is on cooldown"
+        );
+        require(
+            _cooldownByAddress[account] < block.timestamp,
+            "Account is on cooldown"
+        );
         IAIWaifu.Waifu memory waifu = IAIWaifu(waifuNft).waifu(waifuId);
         ERC1155Burnable ingredientContract = ERC1155Burnable(ingredientNft);
         uint256 temptIngredientId = temptMap[waifu.ingredientId];
@@ -344,6 +366,9 @@ contract GameManager is Initializable, AccessControlUpgradeable {
                 Math.min(defendAmount, wager)
             );
         }
+
+        _cooldownByWaifu[waifuId] = block.timestamp + defendCooldown;
+        _cooldownByAddress[account] = block.timestamp + temptCooldown;
 
         emit Tempted(account, waifuId, temptId, wager, defendAmount);
     }
