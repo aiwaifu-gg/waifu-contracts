@@ -1,9 +1,10 @@
 import { ethers, upgrades } from "hardhat";
+const deployParams = require("./arguments/gm.js");
 
 (async () => {
   try {
     const GameManager = await ethers.getContractFactory("GameManager");
-    const gm = await upgrades.deployProxy(GameManager);
+    const gm = await upgrades.deployProxy(GameManager, deployParams);
 
     // Set costs
     console.log("GameManager deployed to:", gm.target);

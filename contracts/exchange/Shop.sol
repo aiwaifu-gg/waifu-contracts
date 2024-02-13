@@ -14,6 +14,7 @@ import {IERC165} from "@openzeppelin/contracts/utils/introspection/IERC165.sol";
 import {IERC1155Receiver} from "@openzeppelin/contracts/token/ERC1155/IERC1155Receiver.sol";
 import {TransferHelper} from "./TransferHelper.sol";
 import {ERC1155Burnable} from "@openzeppelin/contracts/token/ERC1155/extensions/ERC1155Burnable.sol";
+import {IERC2981} from "./IERC2981.sol";
 
 /**
  * This Uniswap-like implementation supports ERC-1155 standard tokens
@@ -36,6 +37,9 @@ contract Shop is ReentrancyGuard, IShop, Ownable, ERC1155, ERC1155Burnable {
     address internal immutable currency; // address of the ERC-20 currency used for exchange
     address internal immutable factory; // address for the factory that created this contract
 
+    // Royalty variables
+    bool internal immutable IS_ERC2981; // whether token contract supports ERC-2981
+
     // onReceive function signatures
     bytes4 internal constant ERC1155_RECEIVED_VALUE = 0xf23a6e61;
     bytes4 internal constant ERC1155_BATCH_RECEIVED_VALUE = 0xbc197c81;
@@ -43,6 +47,9 @@ contract Shop is ReentrancyGuard, IShop, Ownable, ERC1155, ERC1155Burnable {
     // Mapping variables
     mapping(uint256 => uint256) internal totalSupplies; // Liquidity pool token supply per Token id
     mapping(uint256 => uint256) internal currencyReserves; // currency Token reserve per Token id
+    mapping(address => uint256) internal royaltiesNumerator; // Mapping tracking how much royalties can be claimed per address
+
+    uint256 internal constant ROYALTIES_DENOMINATOR = 10000;
 
     //
     // Constructor
@@ -70,6 +77,8 @@ contract Shop is ReentrancyGuard, IShop, Ownable, ERC1155, ERC1155Burnable {
         factory = msg.sender;
         token = IERC1155(_tokenAddr);
         currency = _currencyAddr;
+
+        IS_ERC2981 = IERC1155(_tokenAddr).supportsInterface(type(IERC2981).interfaceId);
     }
 
     //
@@ -236,8 +245,20 @@ contract Shop is ReentrancyGuard, IShop, Ownable, ERC1155, ERC1155Burnable {
                 currencyReserve
             );
 
+            // If royalty, substract amount seller will receive after LP fees were calculated
+            // Note: Royalty will be a bit lower since LF fees are substracted first
+            (address royaltyRecipient, uint256 royaltyAmount) = getRoyaltyInfo(
+                idSold,
+                currencyAmount
+            );
+            if (royaltyAmount > 0) {
+                royaltiesNumerator[royaltyRecipient] +=
+                    royaltyAmount *
+                    ROYALTIES_DENOMINATOR;
+            }
+
             // Increase total amount of currency to receive (minus royalty to pay)
-            totalCurrency += currencyAmount;
+            totalCurrency += currencyAmount - royaltyAmount;
 
             // Update individual currency reseve amount
             currencyReserves[idSold] = currencyReserve - currencyAmount;
@@ -797,6 +818,40 @@ contract Shop is ReentrancyGuard, IShop, Ownable, ERC1155, ERC1155Burnable {
         );
 
         return ERC1155_RECEIVED_VALUE;
+    }
+
+    /**
+     * @notice Will send the royalties that _royaltyRecipient can claim, if any
+     * @dev Anyone can call this function such that payout could be distributed
+     * regularly instead of being claimed.
+     * @param _royaltyRecipient Address that is able to claim royalties
+     */
+    function sendRoyalties(address _royaltyRecipient) external {
+        uint256 royaltyAmount = royaltiesNumerator[_royaltyRecipient] /
+            ROYALTIES_DENOMINATOR;
+        royaltiesNumerator[_royaltyRecipient] =
+            royaltiesNumerator[_royaltyRecipient] %
+            ROYALTIES_DENOMINATOR;
+        TransferHelper.safeTransfer(currency, _royaltyRecipient, royaltyAmount);
+    }
+
+    /**
+     * @notice Will return how much of currency need to be paid for the royalty
+     * @notice Royalty is capped at 25% of the total amount of currency
+     * @param _tokenId ID of the erc-1155 token being traded
+     * @param _cost    Amount of currency sent/received for the trade
+     * @return recipient Address that will be able to claim the royalty
+     * @return royalty Amount of currency that will be sent to royalty recipient
+     */
+    function getRoyaltyInfo(
+        uint256 _tokenId,
+        uint256 _cost
+    ) public view returns (address recipient, uint256 royalty) {
+        if (IS_ERC2981) {
+            return IERC2981(address(token)).royaltyInfo(_tokenId, _cost);
+        } else {
+            return (address(0), 0);
+        }
     }
 
     /**
