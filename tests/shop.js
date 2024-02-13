@@ -53,9 +53,12 @@ function getRemoveLiqData(minCurrency, minTokens, deadline) {
 }
 describe("Shop", function () {
   const deadline = Math.floor(Date.now() / 1000) + 100000;
+  const FEE_RECIPIENT_INDEX = 10;
 
   async function deployBaseContracts() {
-    const [deployer] = await ethers.getSigners();
+    const signers = await ethers.getSigners();
+    const [deployer] = signers;
+    const feeRecipient = signers[FEE_RECIPIENT_INDEX];
 
     const waifuToken = await ethers.deployContract("WaifuToken", [
       {
@@ -75,7 +78,13 @@ describe("Shop", function () {
 
     const ingredients = await ethers.deployContract(
       "Ingredients",
-      [deployer.address, deployer.address, "https://poc.virtuals.io"],
+      [
+        deployer.address,
+        deployer.address,
+        feeRecipient.address,
+        200,
+        "https://poc.virtuals.io",
+      ],
       {}
     );
     await ingredients.waitForDeployment();
@@ -194,6 +203,7 @@ describe("Shop", function () {
       deployWithLiquidity
     );
     const [deployer, operator, buyer, seller] = this.signers;
+    const taxCollector = this.signers[FEE_RECIPIENT_INDEX];
     await ingredients.mint(seller.address, 1, 50, "0x");
     await ingredients.connect(seller).setApprovalForAll(shop.target, true);
 
@@ -212,7 +222,7 @@ describe("Shop", function () {
       parseFloat(formatEther(await waifuToken.balanceOf(shop.target))).toFixed(
         2
       )
-    ).to.equal("266.67");
+    ).to.equal("267.33");
     expect(await ingredients.balanceOf(shop.target, 1)).to.equal(150n);
     expect(await ingredients.balanceOf(shop.target, 2)).to.equal(200n);
     expect(await ingredients.balanceOf(shop.target, 3)).to.equal(300n);
@@ -220,7 +230,7 @@ describe("Shop", function () {
       parseFloat(
         formatEther(await waifuToken.balanceOf(seller.address))
       ).toFixed(2)
-    ).to.equal("33.33");
+    ).to.equal("32.67");
     expect(
       (await waifuToken.balanceOf(seller.address)) +
         (await waifuToken.balanceOf(shop.target))
@@ -228,6 +238,13 @@ describe("Shop", function () {
     expect(await ingredients.balanceOf(seller.address, 1)).to.equal(0n);
     expect(await ingredients.balanceOf(seller.address, 2)).to.equal(0n);
     expect(await ingredients.balanceOf(seller.address, 3)).to.equal(0n);
+
+    // Tax collector
+    expect(await waifuToken.balanceOf(taxCollector.address)).to.equal(0n);
+    await expect(shop.sendRoyalties(taxCollector.address)).to.be.fulfilled;
+    expect(await waifuToken.balanceOf(taxCollector.address)).to.equal(
+      666666666666666666n
+    );
   });
 
   it("should be able to remove liquidity after transactions", async function () {
@@ -235,6 +252,7 @@ describe("Shop", function () {
       deployWithLiquidity
     );
     const [deployer, operator, buyer, seller] = this.signers;
+    const taxCollector = this.signers[FEE_RECIPIENT_INDEX];
     await ingredients.mint(seller.address, 1, 50, "0x");
     await ingredients.connect(seller).setApprovalForAll(shop.target, true);
 
@@ -274,11 +292,17 @@ describe("Shop", function () {
         )
       );
     await expect(tx).to.be.fulfilled;
+
+    await shop.sendRoyalties(taxCollector.address);
     expect(await waifuToken.balanceOf(shop.target)).to.equal(0n);
     expect(await ingredients.balanceOf(shop.target, 1)).to.equal(0n);
     expect(await ingredients.balanceOf(shop.target, 2)).to.equal(0n);
     expect(await ingredients.balanceOf(shop.target, 3)).to.equal(0n);
-    expect(parseFloat(formatEther(await waifuToken.balanceOf(operator.address))).toFixed(2)).to.equal("266.67");
+    expect(
+      parseFloat(
+        formatEther(await waifuToken.balanceOf(operator.address))
+      ).toFixed(2)
+    ).to.equal("266.67");
     expect(await ingredients.balanceOf(operator.address, 1)).to.equal(150n);
     expect(await ingredients.balanceOf(operator.address, 2)).to.equal(200n);
     expect(await ingredients.balanceOf(operator.address, 3)).to.equal(300n);
