@@ -24,7 +24,7 @@ contract Reward is AccessControl {
     function distributeReward(
         uint256 amount
     ) external onlyRole(ORACLE_ROLE) {
-        IERC20(token).safeTransferFrom(_msgSender(), address(this), amount);
+        token.safeTransferFrom(_msgSender(), address(this), amount);
         emit NewReward(amount);
     }
 
@@ -33,7 +33,7 @@ contract Reward is AccessControl {
         uint256 amount,
         uint256 lovePoints
     ) external onlyRole(ORACLE_ROLE) {
-        IERC20(token).safeTransfer(receiver, amount);
+        token.safeTransfer(receiver, amount);
         emit RewardClaimed(receiver, amount, lovePoints);
     }
 }
