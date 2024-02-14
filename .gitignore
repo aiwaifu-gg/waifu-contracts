@@ -18,3 +18,4 @@ cache/
 artifacts/
 deployments
 .deps
+yarn-error.lock
