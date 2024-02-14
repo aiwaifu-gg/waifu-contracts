@@ -302,12 +302,10 @@ contract GameManager is Initializable, AccessControlUpgradeable {
             ) >= levelCost.ingredients,
             "Insufficient ingredients"
         );
-        ERC1155Burnable(ingredientNft).safeTransferFrom(
+        ERC1155Burnable(ingredientNft).burn(
             sender,
-            address(this),
             levelUpIngredientId,
-            levelCost.ingredients,
-            ""
+            levelCost.ingredients
         );
 
         // Level up
