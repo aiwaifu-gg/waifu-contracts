@@ -215,13 +215,8 @@ contract WaifuToken is ERC20Custom, AccessControl {
         return (amountLessTax_);
     }
 
-    function withdrawETH(
-        uint256 amount_
-    ) external onlyRole(DEFAULT_ADMIN_ROLE) {
-        (bool success, ) = _msgSender().call{value: amount_}("");
-        if (!success) {
-            _revert(TransferFailed.selector);
-        }
+    fallback() external {
+        revert("Not supported");
     }
 
     function withdrawERC20(
