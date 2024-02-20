@@ -351,15 +351,16 @@ contract GameManager is Initializable, AccessControlUpgradeable {
         uint256 temptId = _nextTemptId++;
         ingredientContract.burn(account, temptIngredientId, wager);
 
+        address defender = IERC721(waifuNft).ownerOf(waifuId);
         uint256 defendAmount = ingredientContract.isApprovedForAll(
-            account,
+            defender,
             address(this)
         )
-            ? ingredientContract.balanceOf(account, waifu.ingredientId)
+            ? ingredientContract.balanceOf(defender, waifu.ingredientId)
             : 0;
         if (defendAmount > 0) {
             ingredientContract.burn(
-                IERC721(waifuNft).ownerOf(waifuId),
+                defender,
                 waifu.ingredientId,
                 Math.min(defendAmount, wager)
             );
