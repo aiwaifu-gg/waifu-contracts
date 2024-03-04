@@ -186,23 +186,19 @@ contract WaifuToken is ERC20Custom, AccessControl {
 
                 // on sell
                 if (isLiquidityPool(to_) && totalSellTaxBasisPoints() > 0) {
-                    if (projectSellTaxBasisPoints > 0) {
-                        uint256 projectTax = ((sentAmount_ *
-                            projectSellTaxBasisPoints) / BP_DENOM);
-                        projectTaxPendingSwap += uint128(projectTax);
-                        tax += projectTax;
-                    }
+                    uint256 projectTax = ((sentAmount_ *
+                        projectSellTaxBasisPoints) / BP_DENOM);
+                    projectTaxPendingSwap += uint128(projectTax);
+                    tax += projectTax;
                 }
                 // on buy
                 else if (
                     isLiquidityPool(from_) && totalBuyTaxBasisPoints() > 0
                 ) {
-                    if (projectBuyTaxBasisPoints > 0) {
-                        uint256 projectTax = ((sentAmount_ *
-                            projectBuyTaxBasisPoints) / BP_DENOM);
-                        projectTaxPendingSwap += uint128(projectTax);
-                        tax += projectTax;
-                    }
+                    uint256 projectTax = ((sentAmount_ *
+                        projectBuyTaxBasisPoints) / BP_DENOM);
+                    projectTaxPendingSwap += uint128(projectTax);
+                    tax += projectTax;
                 }
 
                 if (tax > 0) {
