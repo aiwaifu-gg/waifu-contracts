@@ -6,7 +6,6 @@ pragma solidity ^0.8.20;
 import {IShop} from "./IShop.sol";
 import {ReentrancyGuard} from "./ReentrancyGuard.sol";
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 import {IERC1155MetadataURI} from "@openzeppelin/contracts/token/ERC1155/extensions/IERC1155MetadataURI.sol";
 import {IERC1155} from "@openzeppelin/contracts/token/ERC1155/IERC1155.sol";
 import {ERC1155} from "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
@@ -31,7 +30,7 @@ import {IERC2981} from "./IERC2981.sol";
  * @dev ERC-777 tokens may be vulnerable if used as currency in Shop. Please review the code
  * carefully before using it with ERC-777 tokens.
  */
-contract Shop is ReentrancyGuard, IShop, Ownable, ERC1155, ERC1155Burnable {
+contract Shop is ReentrancyGuard, IShop, ERC1155, ERC1155Burnable {
     // Variables
     IERC1155 internal immutable token; // address of the ERC-1155 token contract
     address internal immutable currency; // address of the ERC-20 currency used for exchange
@@ -68,7 +67,7 @@ contract Shop is ReentrancyGuard, IShop, Ownable, ERC1155, ERC1155Burnable {
         address _tokenAddr,
         address _currencyAddr,
         string memory _uri
-    ) ERC1155(_uri) Ownable(msg.sender) {
+    ) ERC1155(_uri) {
         require(
             _tokenAddr != address(0) && _currencyAddr != address(0),
             "E#1" // Error#constructor:INVALID_INPUT
@@ -78,7 +77,9 @@ contract Shop is ReentrancyGuard, IShop, Ownable, ERC1155, ERC1155Burnable {
         token = IERC1155(_tokenAddr);
         currency = _currencyAddr;
 
-        IS_ERC2981 = IERC1155(_tokenAddr).supportsInterface(type(IERC2981).interfaceId);
+        IS_ERC2981 = IERC1155(_tokenAddr).supportsInterface(
+            type(IERC2981).interfaceId
+        );
     }
 
     //
@@ -98,6 +99,7 @@ contract Shop is ReentrancyGuard, IShop, Ownable, ERC1155, ERC1155Burnable {
         // Input validation
         // solhint-disable-next-line not-rely-on-time
         require(_deadline >= block.timestamp, "E#3"); // Error#_currencyToToken: DEADLINE_EXCEEDED
+        require(_tokenIds.length == _tokensBoughtAmounts.length, "E#2"); // Error#_currencyToToken: INVALID_TOKENS_AMOUNT
 
         // Number of Token IDs to deposit
         uint256 nTokens = _tokenIds.length;
@@ -212,6 +214,7 @@ contract Shop is ReentrancyGuard, IShop, Ownable, ERC1155, ERC1155Burnable {
         // Input validation
         // solhint-disable-next-line not-rely-on-time
         require(_deadline >= block.timestamp, "E#6"); // Error#_tokenToCurrency: DEADLINE_EXCEEDED
+        require(_tokenIds.length == _tokensSoldAmounts.length, "E#33"); // Error#_tokenToCurrency: INVALID_TOKENS_AMOUNT
 
         // Initialize variables
         uint256 totalCurrency = 0; // Total amount of currency tokens to transfer
@@ -628,10 +631,6 @@ contract Shop is ReentrancyGuard, IShop, Ownable, ERC1155, ERC1155Burnable {
     // ));
     bytes4 internal constant REMOVELIQUIDITY_SIG = 0x5c0bf259;
 
-    // bytes4(keccak256(
-    //   "DepositTokens()"
-    // ));
-    bytes4 internal constant DEPOSIT_SIG = 0xc8c323f9;
 
     //
     // Buying Tokens
@@ -660,6 +659,7 @@ contract Shop is ReentrancyGuard, IShop, Ownable, ERC1155, ERC1155Burnable {
         // solhint-disable-next-line not-rely-on-time
         require(_deadline >= block.timestamp, "E#19"); // Error#buyTokens: DEADLINE_EXCEEDED
         require(_tokenIds.length > 0, "E#20"); // Error#buyTokens: INVALID_CURRENCY_IDS_AMOUNT
+        require(_tokenIds.length == _tokensBoughtAmounts.length, "E#21"); // Error#buyTokens: INVALID_TOKENS_AMOUNT
 
         // Transfer the tokens for purchase
         TransferHelper.safeTransferFrom(
@@ -784,10 +784,6 @@ contract Shop is ReentrancyGuard, IShop, Ownable, ERC1155, ERC1155Burnable {
             //
             // Deposits & Invalid Calls
             //
-        } else if (functionSignature == DEPOSIT_SIG) {
-            // Do nothing for when contract is self depositing
-            // This could be use to deposit currency "by accident", which would be locked
-            require(msg.sender == address(currency), "E#26"); // Error#onERC1155BatchReceived: INVALID_TOKENS_DEPOSITED
         } else {
             revert("E#27"); // Error#onERC1155BatchReceived: INVALID_METHOD
         }
@@ -894,6 +890,8 @@ contract Shop is ReentrancyGuard, IShop, Ownable, ERC1155, ERC1155Burnable {
         uint256 nIds = _ids.length;
         uint256[] memory prices = new uint256[](nIds);
 
+        require(_ids.length == _tokensBought.length, "E#30"); // Error#getPrice_currencyToToken: INVALID_INPUTS_LENGTH
+
         for (uint256 i = 0; i < nIds; i++) {
             // Load Token id reserve
             uint256 tokenReserve = token.balanceOf(address(this), _ids[i]);
@@ -920,6 +918,8 @@ contract Shop is ReentrancyGuard, IShop, Ownable, ERC1155, ERC1155Burnable {
     ) external view override returns (uint256[] memory) {
         uint256 nIds = _ids.length;
         uint256[] memory prices = new uint256[](nIds);
+
+        require(_ids.length == _tokensSold.length, "E#31"); // Error#getPrice_tokenToCurrency: INVALID_INPUTS_LENGTH
 
         for (uint256 i = 0; i < nIds; i++) {
             // Load Token id reserve
@@ -1037,7 +1037,6 @@ contract Shop is ReentrancyGuard, IShop, Ownable, ERC1155, ERC1155Burnable {
         bytes4 interfaceID
     ) public pure override returns (bool) {
         return
-            interfaceID == type(IERC20).interfaceId ||
             interfaceID == type(IERC165).interfaceId ||
             interfaceID == type(IERC1155).interfaceId ||
             interfaceID == type(IERC1155Receiver).interfaceId ||

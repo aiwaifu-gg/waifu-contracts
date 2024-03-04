@@ -69,11 +69,6 @@ contract GameManager is Initializable, AccessControlUpgradeable {
         uint256 replenishAmount
     );
     event WithdrawnToken(address indexed receiver, uint256 amount);
-    event WithdrawnIngredient(
-        address indexed receiver,
-        uint256 id,
-        uint256 amount
-    );
     event LevelUp(uint256 waifuId, uint8 level);
 
     uint256 private _nextTemptId;
