@@ -1037,7 +1037,6 @@ contract Shop is ReentrancyGuard, IShop, ERC1155, ERC1155Burnable {
         bytes4 interfaceID
     ) public pure override returns (bool) {
         return
-            interfaceID == type(IERC20).interfaceId ||
             interfaceID == type(IERC165).interfaceId ||
             interfaceID == type(IERC1155).interfaceId ||
             interfaceID == type(IERC1155Receiver).interfaceId ||
