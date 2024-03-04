@@ -29,7 +29,7 @@ contract WaifuToken is ERC20Custom, AccessControl {
     uint256 internal constant BP_DENOM = 10000;
 
     EnumerableSet.AddressSet private _liquidityPools;
-    bool internal immutable _tokenHasTax;
+    bool internal _tokenHasTax;
 
     uint16 public projectBuyTaxBasisPoints;
     uint16 public projectSellTaxBasisPoints;
@@ -265,8 +265,21 @@ contract WaifuToken is ERC20Custom, AccessControl {
         uint16 newProjectBuyTaxBasisPoints_,
         uint16 newProjectSellTaxBasisPoints_
     ) external onlyRole(DEFAULT_ADMIN_ROLE) {
+        require(
+            newProjectBuyTaxBasisPoints_ < BP_DENOM,
+            "Buy tax basis points must be less than 10000"
+        );
+        require(
+            newProjectSellTaxBasisPoints_ < BP_DENOM,
+            "Sell tax basis points must be less than 10000"
+        );
+
         uint16 oldBuyTaxBasisPoints = projectBuyTaxBasisPoints;
         uint16 oldSellTaxBasisPoints = projectSellTaxBasisPoints;
+
+        _tokenHasTax =
+            newProjectBuyTaxBasisPoints_ > 0 ||
+            newProjectSellTaxBasisPoints_ > 0;
 
         projectBuyTaxBasisPoints = newProjectBuyTaxBasisPoints_;
         projectSellTaxBasisPoints = newProjectSellTaxBasisPoints_;
