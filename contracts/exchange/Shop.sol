@@ -78,7 +78,9 @@ contract Shop is ReentrancyGuard, IShop, Ownable, ERC1155, ERC1155Burnable {
         token = IERC1155(_tokenAddr);
         currency = _currencyAddr;
 
-        IS_ERC2981 = IERC1155(_tokenAddr).supportsInterface(type(IERC2981).interfaceId);
+        IS_ERC2981 = IERC1155(_tokenAddr).supportsInterface(
+            type(IERC2981).interfaceId
+        );
     }
 
     //
@@ -98,6 +100,7 @@ contract Shop is ReentrancyGuard, IShop, Ownable, ERC1155, ERC1155Burnable {
         // Input validation
         // solhint-disable-next-line not-rely-on-time
         require(_deadline >= block.timestamp, "E#3"); // Error#_currencyToToken: DEADLINE_EXCEEDED
+        require(_tokenIds.length == _tokensBoughtAmounts.length, "E#2"); // Error#_currencyToToken: INVALID_TOKENS_AMOUNT
 
         // Number of Token IDs to deposit
         uint256 nTokens = _tokenIds.length;
@@ -212,6 +215,7 @@ contract Shop is ReentrancyGuard, IShop, Ownable, ERC1155, ERC1155Burnable {
         // Input validation
         // solhint-disable-next-line not-rely-on-time
         require(_deadline >= block.timestamp, "E#6"); // Error#_tokenToCurrency: DEADLINE_EXCEEDED
+        require(_tokenIds.length == _tokensSoldAmounts.length, "E#33"); // Error#_tokenToCurrency: INVALID_TOKENS_AMOUNT
 
         // Initialize variables
         uint256 totalCurrency = 0; // Total amount of currency tokens to transfer
@@ -660,6 +664,7 @@ contract Shop is ReentrancyGuard, IShop, Ownable, ERC1155, ERC1155Burnable {
         // solhint-disable-next-line not-rely-on-time
         require(_deadline >= block.timestamp, "E#19"); // Error#buyTokens: DEADLINE_EXCEEDED
         require(_tokenIds.length > 0, "E#20"); // Error#buyTokens: INVALID_CURRENCY_IDS_AMOUNT
+        require(_tokenIds.length == _tokensBoughtAmounts.length, "E#21"); // Error#buyTokens: INVALID_TOKENS_AMOUNT
 
         // Transfer the tokens for purchase
         TransferHelper.safeTransferFrom(
@@ -894,6 +899,8 @@ contract Shop is ReentrancyGuard, IShop, Ownable, ERC1155, ERC1155Burnable {
         uint256 nIds = _ids.length;
         uint256[] memory prices = new uint256[](nIds);
 
+        require(_ids.length == _tokensBought.length, "E#30"); // Error#getPrice_currencyToToken: INVALID_INPUTS_LENGTH
+
         for (uint256 i = 0; i < nIds; i++) {
             // Load Token id reserve
             uint256 tokenReserve = token.balanceOf(address(this), _ids[i]);
@@ -920,6 +927,8 @@ contract Shop is ReentrancyGuard, IShop, Ownable, ERC1155, ERC1155Burnable {
     ) external view override returns (uint256[] memory) {
         uint256 nIds = _ids.length;
         uint256[] memory prices = new uint256[](nIds);
+
+        require(_ids.length == _tokensSold.length, "E#31"); // Error#getPrice_tokenToCurrency: INVALID_INPUTS_LENGTH
 
         for (uint256 i = 0; i < nIds; i++) {
             // Load Token id reserve
