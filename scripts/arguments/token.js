@@ -11,4 +11,8 @@ module.exports = [
     projectSellTaxBasisPoints: "500",
     projectTaxRecipient: process.env.PROJECT_TAX_RECIPIENT,
   },
+  {
+    BlastPointsAddress: process.env.BLAST_POINT_ADDRSS,
+    _pointsOperator: process.env.DEPLOYER
+  }
 ];

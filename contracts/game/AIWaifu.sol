@@ -6,6 +6,7 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
 import "./IAIWaifu.sol";
+import "../interface/IBlastPoints.sol";
 
 contract AIWaifu is
     IAIWaifu,
@@ -19,12 +20,20 @@ contract AIWaifu is
 
     uint256 private _nextTokenId;
 
+    struct BlastPointParams {
+        address BlastPointsAddress;
+        address _pointsOperator;
+    }
+
+
     mapping(uint256 tokenId => Waifu) private _waifus;
 
-    constructor(address defaultAdmin) ERC721("Waifu", "WAI") {
+    constructor(address defaultAdmin, BlastPointParams memory blastParams
+) ERC721("Waifu", "WAI") {
         _grantRole(DEFAULT_ADMIN_ROLE, defaultAdmin);
         _grantRole(MINTER_ROLE, defaultAdmin);
         _nextTokenId = 1;
+        IBlastPoints(blastParams.BlastPointsAddress).configurePointsOperator(blastParams._pointsOperator);
     }
 
     function safeMint(

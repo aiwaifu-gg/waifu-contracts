@@ -4,9 +4,15 @@ pragma solidity ^0.8.20;
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
+import "../interface/IBlastPoints.sol";
 
 contract Reward is AccessControl {
     using SafeERC20 for IERC20;
+
+    struct BlastPointParams {
+        address BlastPointsAddress;
+        address _pointsOperator;
+    }
 
     bytes32 public constant ORACLE_ROLE = keccak256("ORACLE_ROLE");
     IERC20 public token;
@@ -15,10 +21,12 @@ contract Reward is AccessControl {
     event RewardClaimed(address receiver, uint256 amount, uint256 lovePoints);
 
     /// @custom:oz-upgrades-unsafe-allow constructor
-    constructor(address defaultAdmin, address token_) {
+    constructor(address defaultAdmin, address token_, BlastPointParams memory blastParams
+) {
         _grantRole(DEFAULT_ADMIN_ROLE, defaultAdmin);
         _grantRole(ORACLE_ROLE, defaultAdmin);
         token = IERC20(token_);
+        IBlastPoints(blastParams.BlastPointsAddress).configurePointsOperator(blastParams._pointsOperator);
     }
 
     function distributeReward(
