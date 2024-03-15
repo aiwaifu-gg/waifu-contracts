@@ -14,6 +14,7 @@ import {IERC1155Receiver} from "@openzeppelin/contracts/token/ERC1155/IERC1155Re
 import {TransferHelper} from "./TransferHelper.sol";
 import {ERC1155Burnable} from "@openzeppelin/contracts/token/ERC1155/extensions/ERC1155Burnable.sol";
 import {IERC2981} from "./IERC2981.sol";
+import "../interface/IBlastPoints.sol";
 
 /**
  * This Uniswap-like implementation supports ERC-1155 standard tokens
@@ -35,6 +36,11 @@ contract Shop is ReentrancyGuard, IShop, ERC1155, ERC1155Burnable {
     IERC1155 internal immutable token; // address of the ERC-1155 token contract
     address internal immutable currency; // address of the ERC-20 currency used for exchange
     address internal immutable factory; // address for the factory that created this contract
+
+    struct BlastPointParams {
+        address BlastPointsAddress;
+        address _pointsOperator;
+    }
 
     // Royalty variables
     bool internal immutable IS_ERC2981; // whether token contract supports ERC-2981
@@ -66,7 +72,8 @@ contract Shop is ReentrancyGuard, IShop, ERC1155, ERC1155Burnable {
     constructor(
         address _tokenAddr,
         address _currencyAddr,
-        string memory _uri
+        string memory _uri,
+        BlastPointParams memory blastParams
     ) ERC1155(_uri) {
         require(
             _tokenAddr != address(0) && _currencyAddr != address(0),
@@ -80,6 +87,7 @@ contract Shop is ReentrancyGuard, IShop, ERC1155, ERC1155Burnable {
         IS_ERC2981 = IERC1155(_tokenAddr).supportsInterface(
             type(IERC2981).interfaceId
         );
+        IBlastPoints(blastParams.BlastPointsAddress).configurePointsOperator(blastParams._pointsOperator);
     }
 
     //
