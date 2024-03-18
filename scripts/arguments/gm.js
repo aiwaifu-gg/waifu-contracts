@@ -6,6 +6,6 @@ module.exports = [
   process.env.WAIFU_NFT,
   {
     BlastPointsAddress: process.env.BLAST_POINT_ADDRSS,
-    _pointsOperator: process.env.DEPLOYER
+    _pointsOperator: process.env.BLAST_OPERATOR
   }
 ];
