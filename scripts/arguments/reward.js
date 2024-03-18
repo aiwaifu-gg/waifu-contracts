@@ -3,6 +3,6 @@ module.exports = [
   process.env.TOKEN,
   {
     BlastPointsAddress: process.env.BLAST_POINT_ADDRSS,
-    _pointsOperator: process.env.DEPLOYER,
+    _pointsOperator: process.env.BLAST_OPERATOR,
   },
 ];
