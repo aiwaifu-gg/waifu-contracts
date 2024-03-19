@@ -1,5 +1,5 @@
 module.exports = [
-  process.env.DEPLOYER,
+  process.env.ADMIN,
   process.env.TOKEN,
   {
     BlastPointsAddress: process.env.BLAST_POINT_ADDRSS,
