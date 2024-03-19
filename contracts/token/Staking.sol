@@ -36,6 +36,7 @@ contract Staking is Initializable, PausableUpgradeable, OwnableUpgradeable {
         address _pointsOperator;
     }
 
+    /// @custom:oz-upgrades-unsafe-allow constructor
     constructor() {
         _disableInitializers();
     }

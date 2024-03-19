@@ -3,8 +3,8 @@ module.exports = [
     defaultAdmin: process.env.DEPLOYER,
     supplyRecipient: process.env.SUPPLY_RECIPIENT,
     totalSupply: 1000000000,
-    name: "WAIFU",
-    symbol: "$WAIFU",
+    name: "AIWAIFU",
+    symbol: "WAI",
   },
   {
     projectBuyTaxBasisPoints: "500",
