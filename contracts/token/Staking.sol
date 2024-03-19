@@ -26,6 +26,8 @@ contract Staking is Initializable, PausableUpgradeable, OwnableUpgradeable {
     uint256 private constant _MULTIPLIER_PER_MONTH = 5_000; // bips
     uint256 private constant _BASE_MULTIPLIER = 10_000; // bips
 
+    mapping(address => uint256) public earlyHolderBonus;
+
     event Deposit(address indexed user, uint256 amount);
     event Withdraw(address indexed user, uint256 amount);
 
@@ -52,7 +54,9 @@ contract Staking is Initializable, PausableUpgradeable, OwnableUpgradeable {
 
         TOKEN = IERC20(token);
         holdingEndTime = type(uint256).max;
-        IBlastPoints(blastParams.BlastPointsAddress).configurePointsOperator(blastParams._pointsOperator);
+        IBlastPoints(blastParams.BlastPointsAddress).configurePointsOperator(
+            blastParams._pointsOperator
+        );
     }
 
     /*//////////////////////////////
@@ -90,6 +94,20 @@ contract Staking is Initializable, PausableUpgradeable, OwnableUpgradeable {
     function unpause() external onlyOwner {
         require(holdingStartTime != 0 && holdingEndTime == type(uint256).max);
         _unpause();
+    }
+
+    /**
+     * @notice Initiate the holding period (admin only)
+     */
+    function setEarlyHolderBonus(
+        address[] memory accounts,
+        uint256[] memory bonuses
+    ) external onlyOwner {
+        require(holdingStartTime == 0);
+        require(accounts.length == bonuses.length);
+        for (uint256 i = 0; i < accounts.length; i++) {
+            earlyHolderBonus[accounts[i]] = bonuses[i];
+        }
     }
 
     /*//////////////////////////////
@@ -216,7 +234,8 @@ contract Staking is Initializable, PausableUpgradeable, OwnableUpgradeable {
         uint256 start = min(lastUpdatedAt[user], _holdingEndTime);
         uint256 end = min(block.timestamp, _holdingEndTime);
         return
-            (_balances[user] * (_BASIS_POINTS * (end - start))) /
+            (_balances[user] *
+                ((_BASIS_POINTS + earlyHolderBonus[user]) * (end - start))) /
             (_HOUR * _BASIS_POINTS);
     }
 
