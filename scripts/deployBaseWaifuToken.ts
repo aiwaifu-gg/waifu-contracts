@@ -1,5 +1,5 @@
 import { ethers } from "hardhat";
-const tokenParams = require("./arguments/basewaifu.js");
+const tokenParams = require("./arguments/baseToken.js");
 
 (async () => {
   try {
