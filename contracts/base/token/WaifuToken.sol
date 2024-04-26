@@ -6,8 +6,7 @@ import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Permit.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
-import "./ERC20Custom.sol";
-import "../interface/IBlastPoints.sol";
+import "../../interface/ERC20Custom.sol";
 
 contract WaifuToken is ERC20Custom, AccessControl {
     using EnumerableSet for EnumerableSet.AddressSet;
@@ -25,11 +24,6 @@ contract WaifuToken is ERC20Custom, AccessControl {
         uint256 totalSupply;
         string name;
         string symbol;
-    }
-
-    struct BlastPointParams {
-        address BlastPointsAddress;
-        address _pointsOperator;
     }
 
     uint256 internal constant BP_DENOM = 10000;
@@ -55,8 +49,7 @@ contract WaifuToken is ERC20Custom, AccessControl {
 
     constructor(
         BaseParameters memory baseParams,
-        ERC20TaxParameters memory taxParams,
-        BlastPointParams memory blastParams
+        ERC20TaxParameters memory taxParams
     ) ERC20Custom(baseParams.name, baseParams.symbol) {
         _mint(
             baseParams.supplyRecipient,
@@ -65,7 +58,6 @@ contract WaifuToken is ERC20Custom, AccessControl {
         _grantRole(DEFAULT_ADMIN_ROLE, baseParams.defaultAdmin);
         _tokenHasTax = _processTaxParams(taxParams);
         projectTaxRecipient = taxParams.projectTaxRecipient;
-        IBlastPoints(blastParams.BlastPointsAddress).configurePointsOperator(blastParams._pointsOperator);
     }
 
     function _processTaxParams(

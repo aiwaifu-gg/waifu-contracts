@@ -18,6 +18,7 @@ module.exports = {
     apiKey: {
       blast: process.env.BLAST_API_KEY,
       blast_sepolia: "blast_sepolia", // apiKey is not required, just set a placeholder
+      base_sepolia: process.env.BASESCAN_API_KEY,
     },
     customChains: [
       {
@@ -38,6 +39,14 @@ module.exports = {
           browserURL: "https://testnet.blastscan.io",
         },
       },
+      {
+        network: "base_sepolia",
+        chainId: 84532,
+        urls: {
+          apiURL: "https://api-sepolia.basescan.org/api",
+          browserURL: "https://sepolia.basescan.org",
+        },
+      },
     ],
   },
   networks: {
@@ -49,6 +58,11 @@ module.exports = {
     "blast-sepolia": {
       url: "https://sepolia.blast.io",
       accounts: [process.env.PRIVATE_KEY ?? ""],
+      gasPrice: 1000000000,
+    },
+    "base-sepolia": {
+      url: "https://sepolia.base.org",
+      accounts: [process.env.BASE_PRIVATE_KEY ?? ""],
       gasPrice: 1000000000,
     },
   },

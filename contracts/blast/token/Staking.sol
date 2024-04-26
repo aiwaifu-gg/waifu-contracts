@@ -5,7 +5,7 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import {PausableUpgradeable} from "@openzeppelin/contracts-upgradeable/utils/PausableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import {IERC20} from "@openzeppelin/contracts/interfaces/IERC20.sol";
-import "../interface/IBlastPoints.sol";
+import "../../interface/IBlastPoints.sol";
 
 contract Staking is Initializable, PausableUpgradeable, OwnableUpgradeable {
     mapping(address => uint256) internal _balances;

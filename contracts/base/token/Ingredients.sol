@@ -6,7 +6,6 @@ import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/token/ERC1155/extensions/ERC1155Burnable.sol";
 import "@openzeppelin/contracts/token/ERC1155/extensions/ERC1155Supply.sol";
 import "@openzeppelin/contracts/token/common/ERC2981.sol";
-import "../interface/IBlastPoints.sol";
 
 contract Ingredients is
     ERC1155,
@@ -18,24 +17,16 @@ contract Ingredients is
     bytes32 public constant URI_SETTER_ROLE = keccak256("URI_SETTER_ROLE");
     bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
 
-    struct BlastPointParams {
-        address BlastPointsAddress;
-        address _pointsOperator;
-    }
-
-
     constructor(
         address defaultAdmin,
         address minter,
         address feeReceiver,
         uint96 feeNumerator,
-        string memory uri,
-        BlastPointParams memory blastParams
+        string memory uri
     ) ERC1155(uri) {
         _grantRole(DEFAULT_ADMIN_ROLE, defaultAdmin);
         _grantRole(MINTER_ROLE, minter);
         _setDefaultRoyalty(feeReceiver, feeNumerator);
-        IBlastPoints(blastParams.BlastPointsAddress).configurePointsOperator(blastParams._pointsOperator);
     }
 
     function setDefaultRoyalty(

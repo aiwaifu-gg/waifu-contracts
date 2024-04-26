@@ -3,7 +3,10 @@ const deployParams = require("./arguments/waifu.js");
 
 (async () => {
   try {
-    const nft = await ethers.deployContract("AIWaifu", deployParams);
+    const nft = await ethers.deployContract(
+      "contracts/base/game/AIWaifu.sol:AIWaifu",
+      deployParams
+    );
     console.log("AIWaifu deployed to:", nft.target);
   } catch (e) {
     console.log(e);

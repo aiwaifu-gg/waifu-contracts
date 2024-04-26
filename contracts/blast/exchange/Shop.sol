@@ -3,18 +3,18 @@
 // We removed the royalty portion as it is not needed for our use case.
 pragma solidity ^0.8.20;
 
-import {IShop} from "./IShop.sol";
-import {ReentrancyGuard} from "./ReentrancyGuard.sol";
+import {IShop} from "../../interface/IShop.sol";
+import {ReentrancyGuard} from "../../helper/ReentrancyGuard.sol";
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import {IERC1155MetadataURI} from "@openzeppelin/contracts/token/ERC1155/extensions/IERC1155MetadataURI.sol";
 import {IERC1155} from "@openzeppelin/contracts/token/ERC1155/IERC1155.sol";
 import {ERC1155} from "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
 import {IERC165} from "@openzeppelin/contracts/utils/introspection/IERC165.sol";
 import {IERC1155Receiver} from "@openzeppelin/contracts/token/ERC1155/IERC1155Receiver.sol";
-import {TransferHelper} from "./TransferHelper.sol";
+import {TransferHelper} from "../../helper/TransferHelper.sol";
 import {ERC1155Burnable} from "@openzeppelin/contracts/token/ERC1155/extensions/ERC1155Burnable.sol";
-import {IERC2981} from "./IERC2981.sol";
-import "../interface/IBlastPoints.sol";
+import {IERC2981} from "../../interface/IERC2981.sol";
+import "../../interface/IBlastPoints.sol";
 
 /**
  * This Uniswap-like implementation supports ERC-1155 standard tokens

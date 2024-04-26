@@ -8,9 +8,8 @@ import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import {SignatureChecker} from "@openzeppelin/contracts/utils/cryptography/SignatureChecker.sol";
-import "./IAIWaifu.sol";
+import "../../interface/IAIWaifu.sol";
 import {Math} from "@openzeppelin/contracts/utils/math/Math.sol";
-import "../interface/IBlastPoints.sol";
 
 contract GameManager is Initializable, AccessControlUpgradeable {
     using SafeERC20 for IERC20;
@@ -26,11 +25,6 @@ contract GameManager is Initializable, AccessControlUpgradeable {
         uint256 tokens;
         uint24 duration;
     }
-    struct BlastPointParams {
-        address BlastPointsAddress;
-        address _pointsOperator;
-    }
-
 
     mapping(uint256 ingredientId => uint256 updradeId) public levelUpMap;
     mapping(uint8 level => LevelCost) public levelCosts;
@@ -110,8 +104,7 @@ contract GameManager is Initializable, AccessControlUpgradeable {
         uint8 maxLevel_,
         address token_,
         address ingredientNft_,
-        address waifuNft_,
-        BlastPointParams memory blastParams
+        address waifuNft_
     ) public initializer {
         __AccessControl_init();
         _grantRole(DEFAULT_ADMIN_ROLE, defaultAdmin);
@@ -122,7 +115,6 @@ contract GameManager is Initializable, AccessControlUpgradeable {
         token = token_;
         waifuNft = waifuNft_;
         ingredientNft = ingredientNft_;
-        IBlastPoints(blastParams.BlastPointsAddress).configurePointsOperator(blastParams._pointsOperator);
     }
 
     function updateLevelMap(

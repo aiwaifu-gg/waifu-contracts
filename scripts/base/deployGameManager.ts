@@ -3,7 +3,9 @@ const deployParams = require("./arguments/gm.js");
 
 (async () => {
   try {
-    const GameManager = await ethers.getContractFactory("GameManager");
+    const GameManager = await ethers.getContractFactory(
+      "contracts/base/game/GameManager.sol:GameManager"
+    );
     const gm = await upgrades.deployProxy(GameManager, deployParams);
 
     // Set costs
