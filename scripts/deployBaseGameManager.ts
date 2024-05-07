@@ -1,11 +1,10 @@
 import { ethers, upgrades } from "hardhat";
-import { parseEther } from "ethers";
-const deployParams = require("./arguments/gm.js");
+const deployParams = require("./arguments/baseGm.js");
 const levelParams = require("./arguments/levelcost.js");
 
 (async () => {
   try {
-    const GameManager = await ethers.getContractFactory("GameManager");
+    const GameManager = await ethers.getContractFactory("BaseGameManager");
     const gm = await upgrades.deployProxy(GameManager, deployParams, {
       initialAdmin: process.env.ADMIN,
     });
@@ -20,7 +19,7 @@ const levelParams = require("./arguments/levelcost.js");
       .map((_, index) => index + 1);
     const costs = levelParams.map((o) => ({
       ingredients: o.ingredients,
-      tokens: parseEther(o.tokens),
+      tokens: o.tokens,
       duration: o.duration,
     }));
 
