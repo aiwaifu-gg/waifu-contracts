@@ -374,11 +374,6 @@ contract BaseGameManager is Initializable, AccessControlUpgradeable {
         uint16 ingredientScore,
         uint16 flirtScore
     ) external onlyRole(ORACLE_ROLE) {
-        if (success) {
-            IAIWaifu waifuContract = IAIWaifu(waifuNft);
-            IAIWaifu.Waifu memory waifu = waifuContract.waifu(waifuId);
-            waifuContract.setHealth(waifuId, waifu.health - 1, waifu.maxHealth);
-        }
         emit TemptResult(
             temptId,
             waifuId,
