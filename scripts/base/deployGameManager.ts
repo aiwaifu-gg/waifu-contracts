@@ -1,3 +1,4 @@
+import { parseEther } from "ethers";
 import { ethers, upgrades } from "hardhat";
 const deployParams = require("./arguments/gm.js");
 const levelParams = require("./arguments/levelcost.js");
@@ -21,7 +22,7 @@ const levelParams = require("./arguments/levelcost.js");
       .map((_, index) => index + 1);
     const costs = levelParams.map((o) => ({
       ingredients: o.ingredients,
-      tokens: o.tokens,
+      tokens: parseEther(o.tokens),
       duration: o.duration,
     }));
 
