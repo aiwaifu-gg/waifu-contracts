@@ -1,8 +1,8 @@
 /** @type import('hardhat/config').HardhatUserConfig */
 require("dotenv").config();
-require("@nomicfoundation/hardhat-toolbox");
 require("hardhat-deploy");
 require("@openzeppelin/hardhat-upgrades");
+require("@nomicfoundation/hardhat-verify");
 
 module.exports = {
   solidity: {
@@ -57,6 +57,11 @@ module.exports = {
           }
         },
     ],
+  },
+  sourcify: {
+    // Disabled by default
+    // Doesn't need an API key
+    enabled: true
   },
   networks: {
     blast: {

@@ -1,0 +1,797 @@
+{
+  "manifestVersion": "3.2",
+  "proxies": [
+    {
+      "address": "0xdA5a40ae7a31687ffa9b4971018967cFf9Ce3c83",
+      "txHash": "0x921c339852aabd6609c47cb50733738c0809b9d262c3e808aeca31d40b00089f",
+      "kind": "transparent"
+    },
+    {
+      "address": "0xd4Ee7e1F69a738fe94e94302203906edE77D7094",
+      "txHash": "0xb16bcfc99f86160c77519b3ea82f97912b5cc5a1821058693c4ac6e3a8a8474b",
+      "kind": "transparent"
+    },
+    {
+      "address": "0xbaF673a8475F8242e666903ce1BDf1882A796B06",
+      "txHash": "0x0a39b1c59f609589bc85b8e854feee3829cc1d35e56f120fbafa69df295348ce",
+      "kind": "transparent"
+    }
+  ],
+  "impls": {
+    "e4f85615a1677a531453c73965eb247472ff0a1e787bc694e1b900c668c3c466": {
+      "address": "0x432518B1DFF6D59C0a5c5fe5a91eAEe47cC9BF70",
+      "txHash": "0x02031a9cc513b86993049b67e1c6d4bceaa7dcb02ee800c876a068046b876aae",
+      "layout": {
+        "solcVersion": "0.8.20",
+        "storage": [
+          {
+            "label": "_balances",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_mapping(t_address,t_uint256)",
+            "contract": "BaseStaking",
+            "src": "contracts/token/BaseStaking.sol:10"
+          },
+          {
+            "label": "_points",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_mapping(t_address,t_uint256)",
+            "contract": "BaseStaking",
+            "src": "contracts/token/BaseStaking.sol:11"
+          },
+          {
+            "label": "lastUpdatedAt",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_mapping(t_address,t_uint256)",
+            "contract": "BaseStaking",
+            "src": "contracts/token/BaseStaking.sol:12"
+          },
+          {
+            "label": "multiplierStart",
+            "offset": 0,
+            "slot": "3",
+            "type": "t_mapping(t_address,t_uint256)",
+            "contract": "BaseStaking",
+            "src": "contracts/token/BaseStaking.sol:13"
+          },
+          {
+            "label": "holdingStartTime",
+            "offset": 0,
+            "slot": "4",
+            "type": "t_uint256",
+            "contract": "BaseStaking",
+            "src": "contracts/token/BaseStaking.sol:15"
+          },
+          {
+            "label": "holdingEndTime",
+            "offset": 0,
+            "slot": "5",
+            "type": "t_uint256",
+            "contract": "BaseStaking",
+            "src": "contracts/token/BaseStaking.sol:16"
+          },
+          {
+            "label": "TOKEN",
+            "offset": 0,
+            "slot": "6",
+            "type": "t_contract(IERC20)752",
+            "contract": "BaseStaking",
+            "src": "contracts/token/BaseStaking.sol:18"
+          },
+          {
+            "label": "earlyHolderBonus",
+            "offset": 0,
+            "slot": "7",
+            "type": "t_mapping(t_address,t_uint256)",
+            "contract": "BaseStaking",
+            "src": "contracts/token/BaseStaking.sol:28"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_struct(InitializableStorage)64_storage": {
+            "label": "struct Initializable.InitializableStorage",
+            "members": [
+              {
+                "label": "_initialized",
+                "type": "t_uint64",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_initializing",
+                "type": "t_bool",
+                "offset": 8,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_struct(OwnableStorage)14_storage": {
+            "label": "struct OwnableUpgradeable.OwnableStorage",
+            "members": [
+              {
+                "label": "_owner",
+                "type": "t_address",
+                "offset": 0,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_struct(PausableStorage)136_storage": {
+            "label": "struct PausableUpgradeable.PausableStorage",
+            "members": [
+              {
+                "label": "_paused",
+                "type": "t_bool",
+                "offset": 0,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_uint64": {
+            "label": "uint64",
+            "numberOfBytes": "8"
+          },
+          "t_contract(IERC20)752": {
+            "label": "contract IERC20",
+            "numberOfBytes": "20"
+          },
+          "t_mapping(t_address,t_uint256)": {
+            "label": "mapping(address => uint256)",
+            "numberOfBytes": "32"
+          },
+          "t_uint256": {
+            "label": "uint256",
+            "numberOfBytes": "32"
+          }
+        },
+        "namespaces": {
+          "erc7201:openzeppelin.storage.Ownable": [
+            {
+              "contract": "OwnableUpgradeable",
+              "label": "_owner",
+              "type": "t_address",
+              "src": "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol:24",
+              "offset": 0,
+              "slot": "0"
+            }
+          ],
+          "erc7201:openzeppelin.storage.Pausable": [
+            {
+              "contract": "PausableUpgradeable",
+              "label": "_paused",
+              "type": "t_bool",
+              "src": "@openzeppelin/contracts-upgradeable/utils/PausableUpgradeable.sol:21",
+              "offset": 0,
+              "slot": "0"
+            }
+          ],
+          "erc7201:openzeppelin.storage.Initializable": [
+            {
+              "contract": "Initializable",
+              "label": "_initialized",
+              "type": "t_uint64",
+              "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:69",
+              "offset": 0,
+              "slot": "0"
+            },
+            {
+              "contract": "Initializable",
+              "label": "_initializing",
+              "type": "t_bool",
+              "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:73",
+              "offset": 8,
+              "slot": "0"
+            }
+          ]
+        }
+      }
+    },
+    "965f37948b747ac9c860bd13e5cb5ce7af58628e057353575814dc6160fcbfed": {
+      "address": "0x43E45728b41b505Be801f9cbE1EC156b21e20072",
+      "txHash": "0x5c4e65a9654977180a7682533285eaf1d03af426960ceb3167c18f277cd00f35",
+      "layout": {
+        "solcVersion": "0.8.20",
+        "storage": [
+          {
+            "label": "ingredientNft",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_address",
+            "contract": "GameManager",
+            "src": "contracts/game/GameManager.sol:20"
+          },
+          {
+            "label": "waifuNft",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_address",
+            "contract": "GameManager",
+            "src": "contracts/game/GameManager.sol:21"
+          },
+          {
+            "label": "token",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_address",
+            "contract": "GameManager",
+            "src": "contracts/game/GameManager.sol:22"
+          },
+          {
+            "label": "levelUpMap",
+            "offset": 0,
+            "slot": "3",
+            "type": "t_mapping(t_uint256,t_uint256)",
+            "contract": "GameManager",
+            "src": "contracts/game/GameManager.sol:35"
+          },
+          {
+            "label": "levelCosts",
+            "offset": 0,
+            "slot": "4",
+            "type": "t_mapping(t_uint8,t_struct(LevelCost)12846_storage)",
+            "contract": "GameManager",
+            "src": "contracts/game/GameManager.sol:36"
+          },
+          {
+            "label": "_levelCooldown",
+            "offset": 0,
+            "slot": "5",
+            "type": "t_mapping(t_uint256,t_uint256)",
+            "contract": "GameManager",
+            "src": "contracts/game/GameManager.sol:37"
+          },
+          {
+            "label": "_waifuHashes",
+            "offset": 0,
+            "slot": "6",
+            "type": "t_mapping(t_bytes32,t_bool)",
+            "contract": "GameManager",
+            "src": "contracts/game/GameManager.sol:40"
+          },
+          {
+            "label": "maxLevel",
+            "offset": 0,
+            "slot": "7",
+            "type": "t_uint8",
+            "contract": "GameManager",
+            "src": "contracts/game/GameManager.sol:42"
+          },
+          {
+            "label": "_nextFoodId",
+            "offset": 0,
+            "slot": "8",
+            "type": "t_uint256",
+            "contract": "GameManager",
+            "src": "contracts/game/GameManager.sol:43"
+          },
+          {
+            "label": "_nextGiftId",
+            "offset": 0,
+            "slot": "9",
+            "type": "t_uint256",
+            "contract": "GameManager",
+            "src": "contracts/game/GameManager.sol:44"
+          },
+          {
+            "label": "_nextTemptId",
+            "offset": 0,
+            "slot": "10",
+            "type": "t_uint256",
+            "contract": "GameManager",
+            "src": "contracts/game/GameManager.sol:80"
+          },
+          {
+            "label": "temptMap",
+            "offset": 0,
+            "slot": "11",
+            "type": "t_mapping(t_uint256,t_uint256)",
+            "contract": "GameManager",
+            "src": "contracts/game/GameManager.sol:81"
+          },
+          {
+            "label": "_cooldownByWaifu",
+            "offset": 0,
+            "slot": "12",
+            "type": "t_mapping(t_uint256,t_uint256)",
+            "contract": "GameManager",
+            "src": "contracts/game/GameManager.sol:82"
+          },
+          {
+            "label": "_cooldownByAddress",
+            "offset": 0,
+            "slot": "13",
+            "type": "t_mapping(t_address,t_uint256)",
+            "contract": "GameManager",
+            "src": "contracts/game/GameManager.sol:83"
+          },
+          {
+            "label": "defendCooldown",
+            "offset": 0,
+            "slot": "14",
+            "type": "t_uint16",
+            "contract": "GameManager",
+            "src": "contracts/game/GameManager.sol:84"
+          },
+          {
+            "label": "temptCooldown",
+            "offset": 2,
+            "slot": "14",
+            "type": "t_uint16",
+            "contract": "GameManager",
+            "src": "contracts/game/GameManager.sol:85"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_bytes32": {
+            "label": "bytes32",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_bool)": {
+            "label": "mapping(address => bool)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_bytes32,t_struct(RoleData)25_storage)": {
+            "label": "mapping(bytes32 => struct AccessControlUpgradeable.RoleData)",
+            "numberOfBytes": "32"
+          },
+          "t_struct(AccessControlStorage)34_storage": {
+            "label": "struct AccessControlUpgradeable.AccessControlStorage",
+            "members": [
+              {
+                "label": "_roles",
+                "type": "t_mapping(t_bytes32,t_struct(RoleData)25_storage)",
+                "offset": 0,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_struct(InitializableStorage)147_storage": {
+            "label": "struct Initializable.InitializableStorage",
+            "members": [
+              {
+                "label": "_initialized",
+                "type": "t_uint64",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_initializing",
+                "type": "t_bool",
+                "offset": 8,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_struct(RoleData)25_storage": {
+            "label": "struct AccessControlUpgradeable.RoleData",
+            "members": [
+              {
+                "label": "hasRole",
+                "type": "t_mapping(t_address,t_bool)",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "adminRole",
+                "type": "t_bytes32",
+                "offset": 0,
+                "slot": "1"
+              }
+            ],
+            "numberOfBytes": "64"
+          },
+          "t_uint64": {
+            "label": "uint64",
+            "numberOfBytes": "8"
+          },
+          "t_mapping(t_address,t_uint256)": {
+            "label": "mapping(address => uint256)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_bytes32,t_bool)": {
+            "label": "mapping(bytes32 => bool)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_uint256)": {
+            "label": "mapping(uint256 => uint256)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint8,t_struct(LevelCost)12846_storage)": {
+            "label": "mapping(uint8 => struct GameManager.LevelCost)",
+            "numberOfBytes": "32"
+          },
+          "t_struct(LevelCost)12846_storage": {
+            "label": "struct GameManager.LevelCost",
+            "members": [
+              {
+                "label": "ingredients",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "tokens",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "duration",
+                "type": "t_uint24",
+                "offset": 0,
+                "slot": "2"
+              }
+            ],
+            "numberOfBytes": "96"
+          },
+          "t_uint16": {
+            "label": "uint16",
+            "numberOfBytes": "2"
+          },
+          "t_uint24": {
+            "label": "uint24",
+            "numberOfBytes": "3"
+          },
+          "t_uint256": {
+            "label": "uint256",
+            "numberOfBytes": "32"
+          },
+          "t_uint8": {
+            "label": "uint8",
+            "numberOfBytes": "1"
+          }
+        },
+        "namespaces": {
+          "erc7201:openzeppelin.storage.AccessControl": [
+            {
+              "contract": "AccessControlUpgradeable",
+              "label": "_roles",
+              "type": "t_mapping(t_bytes32,t_struct(RoleData)25_storage)",
+              "src": "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol:61",
+              "offset": 0,
+              "slot": "0"
+            }
+          ],
+          "erc7201:openzeppelin.storage.Initializable": [
+            {
+              "contract": "Initializable",
+              "label": "_initialized",
+              "type": "t_uint64",
+              "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:69",
+              "offset": 0,
+              "slot": "0"
+            },
+            {
+              "contract": "Initializable",
+              "label": "_initializing",
+              "type": "t_bool",
+              "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:73",
+              "offset": 8,
+              "slot": "0"
+            }
+          ]
+        }
+      }
+    },
+    "8d7dce6c70e351c96e3679016b4a72cff55f45670b8ab502113df7e5baf966a9": {
+      "address": "0x6F979a6510227eD0954146d076c5B23fFC8155eB",
+      "txHash": "0xec8c5722b7f00b24890fc77f65cd1f981c6fa8fdbee33e0ad985b1248af31980",
+      "layout": {
+        "solcVersion": "0.8.20",
+        "storage": [
+          {
+            "label": "ingredientNft",
+            "offset": 0,
+            "slot": "0",
+            "type": "t_address",
+            "contract": "BaseGameManager",
+            "src": "contracts/game/BaseGameManager.sol:19"
+          },
+          {
+            "label": "waifuNft",
+            "offset": 0,
+            "slot": "1",
+            "type": "t_address",
+            "contract": "BaseGameManager",
+            "src": "contracts/game/BaseGameManager.sol:20"
+          },
+          {
+            "label": "token",
+            "offset": 0,
+            "slot": "2",
+            "type": "t_address",
+            "contract": "BaseGameManager",
+            "src": "contracts/game/BaseGameManager.sol:21"
+          },
+          {
+            "label": "levelUpMap",
+            "offset": 0,
+            "slot": "3",
+            "type": "t_mapping(t_uint256,t_uint256)",
+            "contract": "BaseGameManager",
+            "src": "contracts/game/BaseGameManager.sol:29"
+          },
+          {
+            "label": "levelCosts",
+            "offset": 0,
+            "slot": "4",
+            "type": "t_mapping(t_uint8,t_struct(LevelCost)4915_storage)",
+            "contract": "BaseGameManager",
+            "src": "contracts/game/BaseGameManager.sol:30"
+          },
+          {
+            "label": "_levelCooldown",
+            "offset": 0,
+            "slot": "5",
+            "type": "t_mapping(t_uint256,t_uint256)",
+            "contract": "BaseGameManager",
+            "src": "contracts/game/BaseGameManager.sol:31"
+          },
+          {
+            "label": "_waifuHashes",
+            "offset": 0,
+            "slot": "6",
+            "type": "t_mapping(t_bytes32,t_bool)",
+            "contract": "BaseGameManager",
+            "src": "contracts/game/BaseGameManager.sol:34"
+          },
+          {
+            "label": "maxLevel",
+            "offset": 0,
+            "slot": "7",
+            "type": "t_uint8",
+            "contract": "BaseGameManager",
+            "src": "contracts/game/BaseGameManager.sol:36"
+          },
+          {
+            "label": "_nextFoodId",
+            "offset": 0,
+            "slot": "8",
+            "type": "t_uint256",
+            "contract": "BaseGameManager",
+            "src": "contracts/game/BaseGameManager.sol:37"
+          },
+          {
+            "label": "_nextGiftId",
+            "offset": 0,
+            "slot": "9",
+            "type": "t_uint256",
+            "contract": "BaseGameManager",
+            "src": "contracts/game/BaseGameManager.sol:38"
+          },
+          {
+            "label": "_nextTemptId",
+            "offset": 0,
+            "slot": "10",
+            "type": "t_uint256",
+            "contract": "BaseGameManager",
+            "src": "contracts/game/BaseGameManager.sol:74"
+          },
+          {
+            "label": "temptMap",
+            "offset": 0,
+            "slot": "11",
+            "type": "t_mapping(t_uint256,t_uint256)",
+            "contract": "BaseGameManager",
+            "src": "contracts/game/BaseGameManager.sol:75"
+          },
+          {
+            "label": "_cooldownByWaifu",
+            "offset": 0,
+            "slot": "12",
+            "type": "t_mapping(t_uint256,t_uint256)",
+            "contract": "BaseGameManager",
+            "src": "contracts/game/BaseGameManager.sol:76"
+          },
+          {
+            "label": "_cooldownByAddress",
+            "offset": 0,
+            "slot": "13",
+            "type": "t_mapping(t_address,t_uint256)",
+            "contract": "BaseGameManager",
+            "src": "contracts/game/BaseGameManager.sol:77"
+          },
+          {
+            "label": "defendCooldown",
+            "offset": 0,
+            "slot": "14",
+            "type": "t_uint16",
+            "contract": "BaseGameManager",
+            "src": "contracts/game/BaseGameManager.sol:78"
+          },
+          {
+            "label": "temptCooldown",
+            "offset": 2,
+            "slot": "14",
+            "type": "t_uint16",
+            "contract": "BaseGameManager",
+            "src": "contracts/game/BaseGameManager.sol:79"
+          }
+        ],
+        "types": {
+          "t_address": {
+            "label": "address",
+            "numberOfBytes": "20"
+          },
+          "t_bool": {
+            "label": "bool",
+            "numberOfBytes": "1"
+          },
+          "t_bytes32": {
+            "label": "bytes32",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_address,t_bool)": {
+            "label": "mapping(address => bool)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_bytes32,t_struct(RoleData)25_storage)": {
+            "label": "mapping(bytes32 => struct AccessControlUpgradeable.RoleData)",
+            "numberOfBytes": "32"
+          },
+          "t_struct(AccessControlStorage)34_storage": {
+            "label": "struct AccessControlUpgradeable.AccessControlStorage",
+            "members": [
+              {
+                "label": "_roles",
+                "type": "t_mapping(t_bytes32,t_struct(RoleData)25_storage)",
+                "offset": 0,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_struct(InitializableStorage)93_storage": {
+            "label": "struct Initializable.InitializableStorage",
+            "members": [
+              {
+                "label": "_initialized",
+                "type": "t_uint64",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "_initializing",
+                "type": "t_bool",
+                "offset": 8,
+                "slot": "0"
+              }
+            ],
+            "numberOfBytes": "32"
+          },
+          "t_struct(RoleData)25_storage": {
+            "label": "struct AccessControlUpgradeable.RoleData",
+            "members": [
+              {
+                "label": "hasRole",
+                "type": "t_mapping(t_address,t_bool)",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "adminRole",
+                "type": "t_bytes32",
+                "offset": 0,
+                "slot": "1"
+              }
+            ],
+            "numberOfBytes": "64"
+          },
+          "t_uint64": {
+            "label": "uint64",
+            "numberOfBytes": "8"
+          },
+          "t_mapping(t_address,t_uint256)": {
+            "label": "mapping(address => uint256)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_bytes32,t_bool)": {
+            "label": "mapping(bytes32 => bool)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint256,t_uint256)": {
+            "label": "mapping(uint256 => uint256)",
+            "numberOfBytes": "32"
+          },
+          "t_mapping(t_uint8,t_struct(LevelCost)4915_storage)": {
+            "label": "mapping(uint8 => struct BaseGameManager.LevelCost)",
+            "numberOfBytes": "32"
+          },
+          "t_struct(LevelCost)4915_storage": {
+            "label": "struct BaseGameManager.LevelCost",
+            "members": [
+              {
+                "label": "ingredients",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "0"
+              },
+              {
+                "label": "tokens",
+                "type": "t_uint256",
+                "offset": 0,
+                "slot": "1"
+              },
+              {
+                "label": "duration",
+                "type": "t_uint24",
+                "offset": 0,
+                "slot": "2"
+              }
+            ],
+            "numberOfBytes": "96"
+          },
+          "t_uint16": {
+            "label": "uint16",
+            "numberOfBytes": "2"
+          },
+          "t_uint24": {
+            "label": "uint24",
+            "numberOfBytes": "3"
+          },
+          "t_uint256": {
+            "label": "uint256",
+            "numberOfBytes": "32"
+          },
+          "t_uint8": {
+            "label": "uint8",
+            "numberOfBytes": "1"
+          }
+        },
+        "namespaces": {
+          "erc7201:openzeppelin.storage.AccessControl": [
+            {
+              "contract": "AccessControlUpgradeable",
+              "label": "_roles",
+              "type": "t_mapping(t_bytes32,t_struct(RoleData)25_storage)",
+              "src": "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol:61",
+              "offset": 0,
+              "slot": "0"
+            }
+          ],
+          "erc7201:openzeppelin.storage.Initializable": [
+            {
+              "contract": "Initializable",
+              "label": "_initialized",
+              "type": "t_uint64",
+              "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:69",
+              "offset": 0,
+              "slot": "0"
+            },
+            {
+              "contract": "Initializable",
+              "label": "_initializing",
+              "type": "t_bool",
+              "src": "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol:73",
+              "offset": 8,
+              "slot": "0"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

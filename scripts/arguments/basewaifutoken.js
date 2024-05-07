@@ -1,8 +1,8 @@
 module.exports = [
   {
     defaultAdmin: process.env.DEPLOYER,
-    name: "WAI",
-    symbol: "WAI",
+    name: "IAW",
+    symbol: "IAW",
   },
   {
     projectBuyTaxBasisPoints: "500",

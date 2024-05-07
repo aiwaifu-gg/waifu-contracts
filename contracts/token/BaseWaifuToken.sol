@@ -289,7 +289,7 @@ contract BaseWaifuToken is ERC20Custom, AccessControl {
         _mint(to, amount);
     }
 
-        // Burn tokens from a specified account
+    // Burn tokens from a specified account
     function burn(address account, uint256 amount) public onlyRole(MINTER_ROLE) {
         _burn(account, amount);
     }
