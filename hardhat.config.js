@@ -26,8 +26,7 @@ module.exports = {
         network: "blast",
         chainId: 81457,
         urls: {
-          apiURL:
-            "https://api.routescan.io/v2/network/mainnet/evm/81457/etherscan",
+          apiURL: "https://api.blastscan.io/api",
           browserURL: "https://blastscan.io",
         },
       },
@@ -35,8 +34,7 @@ module.exports = {
         network: "blast-sepolia",
         chainId: 168587773,
         urls: {
-          apiURL:
-            "https://api.routescan.io/v2/network/testnet/evm/168587773/etherscan",
+          apiURL: "https://api-sepolia.blastscan.io/api",
           browserURL: "https://testnet.blastscan.io",
         },
       },
@@ -45,23 +43,23 @@ module.exports = {
         chainId: 84532,
         urls: {
           apiURL: "https://api-sepolia.basescan.org/api",
-          browserURL: "https://sepolia.basescan.org/"
-        }
+          browserURL: "https://sepolia.basescan.org/",
+        },
       },
       {
-          network: "base",
-          chainId: 8453,
-          urls: {
-            apiURL: "https://api.basescan.org/api",
-            browserURL: "https://basescan.org/"
-          }
+        network: "base",
+        chainId: 8453,
+        urls: {
+          apiURL: "https://api.basescan.org/api",
+          browserURL: "https://basescan.org/",
         },
+      },
     ],
   },
   sourcify: {
     // Disabled by default
     // Doesn't need an API key
-    enabled: true
+    enabled: true,
   },
   networks: {
     blast: {
@@ -78,11 +76,11 @@ module.exports = {
       url: process.env.BASE_SEPOLIA_API,
       accounts: [process.env.PRIVATE_KEY ?? ""],
     },
-    "base": {
+    base: {
       url: process.env.BASE_API,
       accounts: [process.env.PRIVATE_KEY ?? ""],
       gasPrice: 1000000000,
-    }
+    },
   },
   sourcify: {
     enabled: true,
